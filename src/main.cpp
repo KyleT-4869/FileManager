@@ -1,9 +1,13 @@
 #include <iostream>
 #include <filesystem>
-#include <string>
-#include <cstdlib>
-#include "document.h"
+#include "JSON.h"
 
+/*
 int main(int argc, char* argv[]) {
     
+}
+*/
+
+int main() {
+    JSON::createJSON();
 }

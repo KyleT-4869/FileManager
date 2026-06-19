@@ -1,2 +1,4 @@
 rapidjson/
 .vscode
+*.json
+*.exe
