@@ -1,4 +1,4 @@
 rapidjson/
 .vscode
 *.json
-*.exe
+fm.exe
