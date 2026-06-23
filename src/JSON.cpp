@@ -52,8 +52,8 @@ std::string JSON::readJSON(std::string& name) {
     FILE* fp = fopen("data.json", "rb");
     
     if(fp == nullptr) {
-        std::cerr << "Error: unable to open data.json" << "\n";
-        return nullptr;
+        fclose(fp);
+        return "Error: unable to open data.json";
     }
 
     char readBuffer[65536];
@@ -63,18 +63,17 @@ std::string JSON::readJSON(std::string& name) {
     doc.ParseStream(is);
 
     if(doc.HasParseError()) {
-        std::cerr << "Error parsing JSON: " << doc.GetParseError() << "\n";
-        return nullptr;
+        fclose(fp);
+        return "Error parsing JSON: " + doc.GetParseError();
     }
 
     if(doc.HasMember(name.c_str()) && doc[name.c_str()].IsString()) {
+        fclose(fp);
         return doc[name.c_str()].GetString();
     } else {
-        std::cerr << "Error: no filepath associated with the given name" << "\n";
-        return nullptr;
+        fclose(fp);
+        return "Error: no filepath associated with the given name";
     }
-    fclose(fp);
-    return nullptr;
 }
 
 void JSON::modifyJSON(std::string& name, std::string& data) {
@@ -91,15 +90,25 @@ void JSON::modifyJSON(std::string& name, std::string& data) {
     Document d;
     d.ParseStream(is);
 
+    if(d.HasParseError()) {
+        fclose(fp);
+        std::cerr << "Error parsing JSON: " << d.GetParseError() <<"\n";
+        return;
+    }
+
     Value inputName;
     Value inputData;
     inputName.SetString(name.c_str(), name.length(), d.GetAllocator());
     inputData.SetString(data.c_str(), data.length(), d.GetAllocator());
-
     d.AddMember(inputName, inputData, d.GetAllocator());
+    
+    fclose(fp); 
 
-    fclose(fp);    
     fp = fopen("data.json", "w");
+    if(fp == nullptr) {
+        std::cerr << "Unable to open data.json" << "\n";
+        return;
+    }
 
     FileWriteStream os(fp, buffer, sizeof(buffer));
     Writer<FileWriteStream> writer(os);
