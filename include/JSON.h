@@ -3,6 +3,6 @@
  
 namespace JSON {
     void createJSON();
-    void modifyJSON(std::string& data);
+    void modifyJSON(std::string& name, std::string& data);
     std::string readJSON(std::string& name);
 }

@@ -2,16 +2,15 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <filesystem>
 #include <cstdio>
 #include "JSON.h"
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/filereadstream.h"
+#include "rapidjson/filewritestream.h"
 
 using namespace rapidjson;
-namespace fs = std::filesystem;
 
 void JSON::createJSON() {
     std::ofstream file;
@@ -64,7 +63,7 @@ std::string JSON::readJSON(std::string& name) {
     doc.ParseStream(is);
 
     if(doc.HasParseError()) {
-        std::cerr << "Error: failed to parse JSON document" << "\n";
+        std::cerr << "Error parsing JSON: " << doc.GetParseError() << "\n";
         return nullptr;
     }
 
@@ -72,5 +71,39 @@ std::string JSON::readJSON(std::string& name) {
         return doc[name.c_str()].GetString();
     } else {
         std::cerr << "Error: no filepath associated with the given name" << "\n";
+        return nullptr;
     }
+    fclose(fp);
+    return nullptr;
+}
+
+void JSON::modifyJSON(std::string& name, std::string& data) {
+    FILE* fp = fopen("data.json", "r+");
+
+    if(fp == nullptr) {
+        std::cerr << "Unable to open data.json" << "\n";
+        return;
+    }
+
+    char buffer[65536];
+    FileReadStream is(fp, buffer, sizeof(buffer));
+
+    Document d;
+    d.ParseStream(is);
+
+    Value inputName;
+    Value inputData;
+    inputName.SetString(name.c_str(), name.length(), d.GetAllocator());
+    inputData.SetString(data.c_str(), data.length(), d.GetAllocator());
+
+    d.AddMember(inputName, inputData, d.GetAllocator());
+
+    fclose(fp);    
+    fp = fopen("data.json", "w");
+
+    FileWriteStream os(fp, buffer, sizeof(buffer));
+    Writer<FileWriteStream> writer(os);
+    d.Accept(writer);
+
+    fclose(fp);
 }
