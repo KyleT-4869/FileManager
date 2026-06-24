@@ -77,7 +77,7 @@ std::string JSON::readJSON(std::string& name) {
 }
 
 void JSON::modifyJSON(std::string& name, std::string& data) {
-    FILE* fp = fopen("data.json", "r+");
+    FILE* fp = fopen("data.json", "r");
 
     if(fp == nullptr) {
         std::cerr << "Unable to open data.json" << "\n";
@@ -96,13 +96,23 @@ void JSON::modifyJSON(std::string& name, std::string& data) {
         return;
     }
 
-    Value inputName;
-    Value inputData;
-    inputName.SetString(name.c_str(), name.length(), d.GetAllocator());
-    inputData.SetString(data.c_str(), data.length(), d.GetAllocator());
-    d.AddMember(inputName, inputData, d.GetAllocator());
-    
-    fclose(fp); 
+    if(!d.IsObject()) {
+        fclose(fp);
+        std::cerr <<"Error: JSON root is not an object." << "\n";
+        return;
+    }
+
+    if(d.HasMember(name.c_str())) {
+        d[name.c_str()].SetString(data.c_str(), data.length(), d.GetAllocator());
+    } else {
+        Value inputName;
+        Value inputData;
+
+        inputName.SetString(name.c_str(), name.length(), d.GetAllocator());
+        inputData.SetString(data.c_str(), data.length(), d.GetAllocator());
+        d.AddMember(inputName, inputData, d.GetAllocator());
+    }
+    fclose(fp);
 
     fp = fopen("data.json", "w");
     if(fp == nullptr) {
