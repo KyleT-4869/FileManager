@@ -2,3 +2,4 @@ rapidjson/
 .vscode
 *.json
 fm.exe
+*.txt
