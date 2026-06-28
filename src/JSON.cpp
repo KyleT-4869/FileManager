@@ -48,12 +48,13 @@ void JSON::createJSON() {
     }
 }
 
-std::string JSON::readJSON(std::string& name) {
+std::string JSON::readJSON(char* name) {
     FILE* fp = fopen("data.json", "rb");
     
     if(fp == nullptr) {
         fclose(fp);
-        return "Error: unable to open data.json";
+        std::cerr << "Error: unable to open data.json" << "\n";
+        return "";
     }
 
     char readBuffer[65536];
@@ -64,15 +65,17 @@ std::string JSON::readJSON(std::string& name) {
 
     if(doc.HasParseError()) {
         fclose(fp);
-        return "Error parsing JSON: " + doc.GetParseError();
+        std::cerr << "Error parsing JSON: " + doc.GetParseError() << "\n";
+        return "";
     }
 
-    if(doc.HasMember(name.c_str()) && doc[name.c_str()].IsString()) {
+    if(doc.HasMember(name) && doc[name].IsString()) {
         fclose(fp);
-        return doc[name.c_str()].GetString();
+        return doc[name].GetString();
     } else {
         fclose(fp);
-        return "Error: no filepath associated with the given name";
+        std::cerr << "Error: no filepath associated with the given name" << "\n";
+        return "";
     }
 }
 

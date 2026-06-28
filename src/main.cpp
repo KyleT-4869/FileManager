@@ -4,9 +4,31 @@
 #include "JSON.h"
 #include "FileManager.h"
 
+using namespace JSON;
+using namespace FileManager;
 
 int main(int argc, char* argv[]) {
-    
+    if(argc < 2) {
+        std::cout << "Welcome to FileManager, here are the options: " << "\n";
+        std::cout << "move: move the file to a new directory, location must be provided" << "\n";
+        return 1;
+    }
+
+    std::string command = argv[1];
+
+    if(command == "move") {
+        if(argc < 3) {
+            std::cout << "location must be provided" << "\n";
+            return 0;
+        }
+        else {
+            std::string filePath = readJSON(argv[3]);
+            if(filePath.empty()) {
+                return 0;
+            } 
+        }
+    }
+
 }
 
 
