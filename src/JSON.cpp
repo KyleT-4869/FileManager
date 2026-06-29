@@ -131,5 +131,32 @@ void JSON::modifyJSON(std::string& name, std::string& data) {
 }
 
 void JSON::printAll() {
-    
+    FILE* fp = fopen("data.json", "rb");
+
+    if(fp == nullptr) {
+        std::cerr << "Error: unable to open data.json" << "\n";
+        return;
+    }
+
+    char buffer[65536];
+    FileReadStream is(fp, buffer, sizeof(buffer));
+
+    Document doc;
+    doc.ParseStream(is);
+
+    if(doc.HasParseError()) {
+        fclose(fp);
+        std::cerr << "Error: parsing JSON " << doc.GetParseError() << "\n";
+        return;
+    }
+    if(!doc.IsObject()) {
+        fclose(fp);
+        std::cerr <<"Error: JSON root is not an object" << "\n";
+        return;
+    }
+
+    for(Value::ConstMemberIterator itr = doc.MemberBegin(); itr != doc.MemberEnd(); ++itr) {
+        std::cout << "\"" << itr->name.GetString() << "\"" <<": " << "\"" <<doc[itr->name].GetString() << "\"" <<"\n";
+    }
+    fclose(fp);
 }
