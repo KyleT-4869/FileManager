@@ -11,10 +11,13 @@ int main(int argc, char* argv[]) {
     if(argc < 2) {
         std::cout << "Welcome to FileManager, here are the options: " << "\n";
         std::cout << "move: move the file to a new directory, location must be provided" << "\n";
+        std::cout << "start: start a file called data.json and write data into it." << "\n";
         return 0;
     }
 
-    if(argv[1] == "move") {
+    std::string command = argv[1];
+
+    if(command == "move") {
         if(argc < 3) {
             std::cout << "location must be provided" << "\n";
             return 0;
@@ -32,7 +35,26 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    if(argv[1] == "add") {
+    if(command == "start") {
+        createJSON();
+    }
+
+    if(command == "goto") {
+        if(argc < 2) {
+            std::cerr << "name and location must be provided" << "\n";
+            return 1;
+        }
+        else {
+            std::string filePath = readJSON(argv[2]);
+            goTo(filePath);
+        }
+    }
+
+    if(command == "printall") {
+        printAll();
+    }
+
+    if(command == "add") {
         if(argc < 3) {
             std::cout << "name and location must be provided" << "\n";
         }

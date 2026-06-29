@@ -129,3 +129,7 @@ void JSON::modifyJSON(std::string& name, std::string& data) {
 
     fclose(fp);
 }
+
+void JSON::printAll() {
+    
+}
