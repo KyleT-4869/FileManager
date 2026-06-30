@@ -10,8 +10,11 @@ using namespace FileManager;
 int main(int argc, char* argv[]) {
     if(argc < 2) {
         std::cout << "Welcome to FileManager, here are the options: " << "\n";
-        std::cout << "move: move the file to a new directory, location must be provided" << "\n";
-        std::cout << "start: start a file called data.json and write data into it." << "\n";
+        std::cout << ". move: move the file to a new directory, location must be provided" << "\n";
+        std::cout << ". start: start a file called data.json and write data into it." << "\n";
+        std::cout << ". printall: print out all the data inside of data.json to console" << "\n";
+        std::cout << ". goto: go to a specific directory in file explorer" << "\n";
+        std::cout << ". run: run the specified exe file" << "\n";
         return 0;
     }
 

@@ -23,6 +23,23 @@ void FileManager::goTo(std::string& path) {
         std::system(shellCommmands.c_str());
     }
     else {
-        std::cerr <<"This command must be passed a direcotory path, not a filepath" << "\n";
+        std::cerr <<"Error: this command must be passed a direcotory path" << "\n";
     }
+}
+
+void FileManager::run(std::string& path) {
+    fs::path filePath = path;
+    if(filePath.extension() != ".exe") {
+        std::cerr << "Error: file provided must be an exe file" << "\n";
+        return;
+    }
+
+    fs::directory_entry potentialDirectoryPath(filePath);
+    if(potentialDirectoryPath.is_directory()) {
+        std::cerr << "Error: must be a file" << "\n";
+        return;
+    }
+
+    std::system(filePath.string().c_str());
+
 }

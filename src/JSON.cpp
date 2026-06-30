@@ -44,7 +44,7 @@ void JSON::createJSON() {
         file.close();
 
     } else {
-        std::cerr << "unable to open file to write to" << "\n";
+        std::cerr << "Error: unable to open file to write to" << "\n";
     }
 }
 
@@ -119,7 +119,7 @@ void JSON::modifyJSON(std::string& name, std::string& data) {
 
     fp = fopen("data.json", "w");
     if(fp == nullptr) {
-        std::cerr << "Unable to open data.json" << "\n";
+        std::cerr << "Error: unable to open data.json" << "\n";
         return;
     }
 
