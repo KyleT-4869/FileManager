@@ -19,11 +19,13 @@ int main(int argc, char* argv[]) {
     }
 
     std::string command = argv[1];
+    constexpr char kGeneralErrorMessage[] {"Error: name and location must be provided"};
+    constexpr char kRunErrorMessage[] {"Error: name must be provided"};
 
     if(command == "move") {
-        if(argc < 3) {
-            std::cout << "location must be provided" << "\n";
-            return 0;
+        if(argc < 4) {
+            std::cerr << kGeneralErrorMessage << "\n";
+            return 1;
         }
         else {
             std::string originalPath = argv[2];
@@ -43,8 +45,8 @@ int main(int argc, char* argv[]) {
     }
 
     if(command == "goto") {
-        if(argc < 2) {
-            std::cerr << "name and location must be provided" << "\n";
+        if(argc < 3) {
+            std::cerr << kGeneralErrorMessage << "\n";
             return 1;
         }
         else {
@@ -58,24 +60,26 @@ int main(int argc, char* argv[]) {
     }
 
     if(command == "add") {
+        if(argc < 4) {
+            std::cerr << kGeneralErrorMessage << "\n";
+            return 1;
+        }
+        else {
+            std::string name = argv[2];
+            std::string filePath = argv[3];
+            modifyJSON(name, filePath);
+        }
+    }
+
+    if(command == "run") {
         if(argc < 3) {
-            std::cout << "name and location must be provided" << "\n";
+            std::cerr << kRunErrorMessage << "\n";
+            return 1;
+        }
+        else {
+            std::string filePath = readJSON(argv[2]);
+            run(filePath);
         }
     }
 
 }
-
-
-// int main() {
-//     // std::string testString = "re4";
-//     // std::cout << JSON::readJSON(testString) << "\n";
-//     //JSON::createJSON();
-//     // std::string name = "re5";
-//     // std::string data = "D:\\FluffyModManager\\Games\\RE4R";
-//     // JSON::modifyJSON(name, data);
-
-//     // std::string originalPath = R"(C:\Users\kylet\Downloads\test.txt)";
-//     // std::string newRelativePath = R"(C:\Users\kylet\Desktop\TestFolder)";
-//     // FileManager::moveFile(originalPath, newRelativePath);
-
-// }

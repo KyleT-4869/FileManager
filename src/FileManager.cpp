@@ -31,6 +31,7 @@ void FileManager::run(std::string& path) {
     fs::path filePath = path;
     if(filePath.extension() != ".exe") {
         std::cerr << "Error: file provided must be an exe file" << "\n";
+        std::cerr << "provided file: " << filePath.string() << "\n";
         return;
     }
 
@@ -40,6 +41,11 @@ void FileManager::run(std::string& path) {
         return;
     }
 
+    fs::path originalPath = fs::current_path();
+    fs::current_path(filePath.parent_path());
+
     std::system(filePath.string().c_str());
+    
+    fs::current_path(originalPath);
 
 }

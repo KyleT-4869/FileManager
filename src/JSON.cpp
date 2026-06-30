@@ -156,7 +156,7 @@ void JSON::printAll() {
     }
 
     for(Value::ConstMemberIterator itr = doc.MemberBegin(); itr != doc.MemberEnd(); ++itr) {
-        std::cout << "\"" << itr->name.GetString() << "\"" <<": " << "\"" <<doc[itr->name].GetString() << "\"" <<"\n";
+        std::cout << "\"" << itr->name.GetString() << "\":" << "\"" <<doc[itr->name].GetString() << "\"" <<"\n";
     }
     fclose(fp);
 }
