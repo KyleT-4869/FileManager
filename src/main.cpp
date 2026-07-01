@@ -22,26 +22,12 @@ int main(int argc, char* argv[]) {
     constexpr char kGeneralErrorMessage[] {"Error: name and location must be provided"};
     constexpr char kRunErrorMessage[] {"Error: name must be provided"};
 
-    if(command == "move") {
-        if(argc < 4) {
-            std::cerr << kGeneralErrorMessage << "\n";
-            return 1;
-        }
-        else {
-            std::string originalPath = argv[2];
-            std::string filePath = readJSON(argv[3]);
-            if(filePath.empty()) {
-                return 1;
-            }
-            else {
-                moveFile(originalPath, filePath);
-                return 0;
-            } 
-        }
-    }
-
     if(command == "start") {
         createJSON();
+    }
+
+    if(command == "printall") {
+        printAll();
     }
 
     if(command == "goto") {
@@ -53,10 +39,6 @@ int main(int argc, char* argv[]) {
             std::string filePath = readJSON(argv[2]);
             goTo(filePath);
         }
-    }
-
-    if(command == "printall") {
-        printAll();
     }
 
     if(command == "add") {
@@ -79,6 +61,24 @@ int main(int argc, char* argv[]) {
         else {
             std::string filePath = readJSON(argv[2]);
             run(filePath);
+        }
+    }
+
+    if(command == "move") {
+        if(argc < 4) {
+            std::cerr << kGeneralErrorMessage << "\n";
+            return 1;
+        }
+        else {
+            std::string originalPath = argv[2];
+            std::string filePath = readJSON(argv[3]);
+            if(filePath.empty()) {
+                return 1;
+            }
+            else {
+                moveFile(originalPath, filePath);
+                return 0;
+            } 
         }
     }
 

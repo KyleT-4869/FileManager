@@ -8,10 +8,26 @@ namespace fs = std::filesystem;
 
 void FileManager::moveFile(std::string& originalPath, std::string& newRelativePath) {
     fs::path oldFilePath(originalPath);
+    fs::path relativePath(newRelativePath);
+    fs::directory_entry potentialDirectory(oldFilePath);
 
-    fs::path newFilePath = fs::path(newRelativePath) / oldFilePath.filename();
-
-    fs::rename(oldFilePath, newFilePath);
+    if(potentialDirectory.is_directory()) {
+        if(oldFilePath.root_name() != relativePath.root_name()) {
+            fs::path newFilepath = relativePath / oldFilePath.filename();
+            fs::copy(oldFilePath, newFilepath);
+            fs::remove_all(oldFilePath);
+        }
+        else {
+            fs::path newFilePath = relativePath / oldFilePath.filename();
+            fs::rename(oldFilePath, newFilePath);
+        }
+    }
+    else {
+        fs::path oldFilePath(originalPath);
+        fs::path newFilePath = fs::path(newRelativePath) / oldFilePath.filename();
+        fs::rename(oldFilePath, newFilePath);
+    }
+    
 }
 
 void FileManager::goTo(std::string& path) {
