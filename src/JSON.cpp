@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <cstdio>
+#include <filesystem>
 #include "JSON.h"
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -11,10 +12,19 @@
 #include "rapidjson/filewritestream.h"
 
 using namespace rapidjson;
+namespace fs = std::filesystem;
 
 void JSON::createJSON() {
+    if(fs::current_path().root_name().string() != "C:" ) { 
+        std::cerr << "Error: execution environement need to be in C drive " << "\n";
+        return;
+    }
+
+    fs::create_directories("C:\\FileManager");  
+    fs::path pathToFile = fs::current_path().root_name() / "FileManager" / "data.json";
+
     std::ofstream file;
-    file.open("data.json", std::ios::out | std::ios::trunc);
+    file.open(pathToFile.string(), std::ios::out | std::ios::trunc);
     if(file.is_open()) {
 
         StringBuffer buffer;

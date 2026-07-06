@@ -3,8 +3,14 @@
 #include <filesystem>
 #include <cstdlib>
 #include "FileManager.h"
+#include "JSON.h"
 
 namespace fs = std::filesystem;
+using namespace JSON;
+
+void::FileManager::setUp() {
+    
+}
 
 void FileManager::moveFile(std::string& originalPath, std::string& newRelativePath) {
     fs::path oldFilePath(originalPath);
@@ -65,3 +71,16 @@ void FileManager::run(std::string& path) {
     fs::current_path(originalPath);
 
 }
+
+// std::string FileManager::getLatestDownload() {
+//     //fs::path originalPath = fs::current_path();
+//     std::string_view sv {readJSON("download")};
+
+//     if(sv == "") {
+//         std::cerr << "Error: cannot find 'download' and it's associated filepath in data.json" << "\n";
+//         return nullptr;
+//     }
+//     // else {
+        
+//     // }
+// }
