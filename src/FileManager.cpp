@@ -8,7 +8,7 @@
 namespace fs = std::filesystem;
 using namespace JSON;
 
-void::FileManager::setUp() {
+bool::FileManager::setUp() {
     
 }
 

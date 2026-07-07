@@ -14,17 +14,9 @@
 using namespace rapidjson;
 namespace fs = std::filesystem;
 
-void JSON::createJSON() {
-    if(fs::current_path().root_name().string() != "C:" ) { 
-        std::cerr << "Error: execution environement need to be in C drive " << "\n";
-        return;
-    }
-
-    fs::create_directories("C:\\FileManager");  
-    fs::path pathToFile = fs::current_path().root_name() / "FileManager" / "data.json";
-
+void JSON::createJSON(const char* pathToJsonFile) {
     std::ofstream file;
-    file.open(pathToFile.string(), std::ios::out | std::ios::trunc);
+    file.open(pathToJsonFile, std::ios::out | std::ios::trunc);
     if(file.is_open()) {
 
         StringBuffer buffer;
@@ -58,8 +50,8 @@ void JSON::createJSON() {
     }
 }
 
-std::string JSON::readJSON(char* name) {
-    FILE* fp = fopen("data.json", "rb");
+std::string JSON::readJSON(const char* pathToJsonFile ,const char* name) {
+    FILE* fp = fopen(pathToJsonFile, "rb");
     
     if(fp == nullptr) {
         fclose(fp);
@@ -89,8 +81,8 @@ std::string JSON::readJSON(char* name) {
     }
 }
 
-void JSON::modifyJSON(std::string& name, std::string& data) {
-    FILE* fp = fopen("data.json", "r");
+void JSON::modifyJSON(const char* pathToJsonFile, std::string& name, std::string& data) {
+    FILE* fp = fopen(pathToJsonFile, "r");
 
     if(fp == nullptr) {
         std::cerr << "Unable to open data.json" << "\n";
@@ -140,8 +132,8 @@ void JSON::modifyJSON(std::string& name, std::string& data) {
     fclose(fp);
 }
 
-void JSON::printAll() {
-    FILE* fp = fopen("data.json", "rb");
+void JSON::printAll(const char* pathToJsonFile) {
+    FILE* fp = fopen(pathToJsonFile, "rb");
 
     if(fp == nullptr) {
         std::cerr << "Error: unable to open data.json" << "\n";
