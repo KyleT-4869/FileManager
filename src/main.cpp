@@ -6,6 +6,7 @@
 
 using namespace JSON;
 using namespace FileManager;
+namespace fs = std::filesystem;
 
 int main(int argc, char* argv[]) {
     if(argc < 2) {
@@ -19,67 +20,69 @@ int main(int argc, char* argv[]) {
     }
 
     std::string command = argv[1];
+    const char* pathToDataFile = getDataFilePath().string().c_str();
     constexpr char kGeneralErrorMessage[] {"Error: name and location must be provided"};
     constexpr char kRunErrorMessage[] {"Error: name must be provided"};
 
     if(command == "start") {
-        createJSON();
+        setUp();
+        createJSON(getDataFilePath().string().c_str());
     }
 
-    if(command == "printall") {
-        printAll();
-    }
+    // if(command == "printall") {
+    //     printAll();
+    // }
 
-    if(command == "goto") {
-        if(argc < 3) {
-            std::cerr << kGeneralErrorMessage << "\n";
-            return 1;
-        }
-        else {
-            std::string filePath = readJSON(argv[2]);
-            goTo(filePath);
-        }
-    }
+    // if(command == "goto") {
+    //     if(argc < 3) {
+    //         std::cerr << kGeneralErrorMessage << "\n";
+    //         return 1;
+    //     }
+    //     else {
+    //         std::string filePath = readJSON(argv[2]);
+    //         goTo(filePath);
+    //     }
+    // }
 
-    if(command == "add") {
-        if(argc < 4) {
-            std::cerr << kGeneralErrorMessage << "\n";
-            return 1;
-        }
-        else {
-            std::string name = argv[2];
-            std::string filePath = argv[3];
-            modifyJSON(name, filePath);
-        }
-    }
+    // if(command == "add") {
+    //     if(argc < 4) {
+    //         std::cerr << kGeneralErrorMessage << "\n";
+    //         return 1;
+    //     }
+    //     else {
+    //         std::string name = argv[2];
+    //         std::string filePath = argv[3];
+    //         modifyJSON(name, filePath);
+    //     }
+    // }
 
-    if(command == "run") {
-        if(argc < 3) {
-            std::cerr << kRunErrorMessage << "\n";
-            return 1;
-        }
-        else {
-            std::string filePath = readJSON(argv[2]);
-            run(filePath);
-        }
-    }
+    // if(command == "run") {
+    //     if(argc < 3) {
+    //         std::cerr << kRunErrorMessage << "\n";
+    //         return 1;
+    //     }
+    //     else {
+    //         std::string filePath = readJSON(argv[2]);
+    //         run(filePath);
+    //     }
+    // }
 
-    if(command == "move") {
-        if(argc < 4) {
-            std::cerr << kGeneralErrorMessage << "\n";
-            return 1;
-        }
-        else {
-            std::string originalPath = argv[2];
-            std::string filePath = readJSON(argv[3]);
-            if(filePath.empty()) {
-                return 1;
-            }
-            else {
-                moveFile(originalPath, filePath);
-                return 0;
-            } 
-        }
-    }
+    // if(command == "move") {
+    //     if(argc < 4) {
+    //         std::cerr << kGeneralErrorMessage << "\n";
+    //         return 1;
+    //     }
+    //     else {
+    //         std::string originalPath = argv[2];
+    //         std::string filePath = readJSON(argv[3]);
+    //         if(filePath.empty()) {
+    //             return 1;
+    //         }
+    //         else {
+    //             moveFile(originalPath, filePath);
+    //             return 0;
+    //         } 
+    //     }
+    // }
 
 }

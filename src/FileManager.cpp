@@ -8,8 +8,21 @@
 namespace fs = std::filesystem;
 using namespace JSON;
 
-bool::FileManager::setUp() {
-    
+void FileManager::setUp() {
+    const char* appData = std::getenv("LOCALAPPDATA");
+    fs::path pathToDirectory = fs::path(appData) / "FileManager";
+    if(fs::directory_entry(pathToDirectory).exists()) {
+        return;
+    }
+    else {
+        fs::create_directories(pathToDirectory);
+        return;
+    }  
+}
+
+fs::path FileManager::getDataFilePath() {
+    const char* appData = std::getenv("LOCALAPPDATA");
+    return fs::path(appData) / "FileManager" / "data.json";
 }
 
 void FileManager::moveFile(std::string& originalPath, std::string& newRelativePath) {

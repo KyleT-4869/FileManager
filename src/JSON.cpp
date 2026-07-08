@@ -47,6 +47,7 @@ void JSON::createJSON(const char* pathToJsonFile) {
 
     } else {
         std::cerr << "Error: unable to open file to write to" << "\n";
+        std::cerr << pathToJsonFile;
     }
 }
 
